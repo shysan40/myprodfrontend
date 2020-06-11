@@ -1,0 +1,9 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t shysan/myfrontendprod -f Dockerfile.dev .
+
+script:
+  - docker run -e CI=true shysan/myfrontendprod npm run test
