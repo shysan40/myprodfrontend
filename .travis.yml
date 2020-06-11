@@ -3,7 +3,20 @@ services:
   - docker
 
 before_install:
-  - docker build -t shysan/myfrontendprod -f Dockerfile.dev .
+  - docker build -t shysan/myprodfrontend -f Dockerfile.dev .
 
 script:
-  - docker run -e CI=true shysan/myfrontendprod npm run test
+  - docker run -e CI=true shysan/myprodfrontend npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "myprodfrontend"
+  env: "Myprodfrontend-env"
+  bucket_name: "elasticbeanstalk-us-east-2-104595938086"
+  bucket_path: "myprodfrontend"
+  on:
+    branch: master
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key:
+    secure: "AWS_SECRET_KEY"
